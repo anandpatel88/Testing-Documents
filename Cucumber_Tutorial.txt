@@ -1,0 +1,1298 @@
+TDD- Test driven development frameowrk(Automation- TestNG)
+TDD approach used in Manual
+
+BDD- Behaviour driven development 
+Extenstion of TDD
+
+TDD- How to Test(BRD-RTM-Scenario-TCs)---> Miss of TC, deviation of TC
+BDD- What to Test(Features files--)
+
+Sample Feature File---
+
+Feature: smoke of Site abcd
+
+Scenario: login Functionality testing
+
+given open browser
+when provide user name and password
+then verify that login is working
+
+given open browser
+when provide user name and password
+then verify that login is working
+
+Scenario: login Functionality testing
+
+given open browser
+when provide user name and password
+then verify that login is working
+
+given open browser
+when provide user name and password
+then verify that login is working
+
+------------------------------------------------------------------
+BDD tools
+1. JBehave - Java
+2. Cucumber - Java (gherkins)
+3. SpecsFlow - .Net
+-------------------------------------------------------------
+Cucumber Component
+1.Features File
+2. Runner(to run feature gile like how Main run java file)
+3.Step Defenition
+--------------------------------------------------------------
+Feature File
+
+http://cucumber.github.io/cucumber-eclipse/update-site/ 
+----------------------------------------------------------
+Setting up Project
+1. maven Project Setup with Depedencies Cucumber-JUnit, Cucumber-Java, J Unit, Selenium Jar
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.learnAutomation.Cucumber</groupId>
+  <artifactId>com.learnAutomation.Cucumber</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>1.2.4</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>1.2.4</version>
+</dependency>
+</dependencies>
+</project>
+-------------------------------------------------------------------
+Feature File
+Feature: Test login Functionality of Demo Automation
+Scenario: login Functionality with valid credential
+Given Open browser and launch URL
+When provide Username and password
+Then  user should be able to access
+--------------------------------------------------------------------
+Runner 
+package com.learnAutomation.Cucumber;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features="FeaturesTest",glue="com.learnAutomation.Cucumber")
+public class TestRunner
+{
+
+}
+------------------------------------------------------------------
+package com.learnAutomation.Cucumber;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open Chrome and launch URL$")
+	public void open_Chrome_and_launch_URL() 
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+	@When("^provide Username and password$")
+	public void provide_Username_and_password() 
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys("anandpatel100");
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys("Password13");
+
+
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.close();
+
+	}
+
+
+}
+----------------------------------------------------------------------------------------------------------------------------------------------
+Parameter
+
+Feature: Test login Functionality of Demo Automation
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel100" and "password12345"
+Then  user should be able to access
+
+
+
+package com.learnAutomation.Cucumber;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open Chrome and launch URL$")
+	public void open_Chrome_and_launch_URL() 
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+
+	@When("^provide \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void provide_and(String AnanduserName, String Anandpassword)
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(AnanduserName);
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(Anandpassword);
+
+
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.close();
+
+	}
+
+
+}
+---------------------------------------------------------------------------------------------------------
+How to run multiple scenarios with Defiirent credential
+
+Feature: Test login Functionality of Demo Automation
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel100" and "password12345"
+Then  user should be able to access
+
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel200" and "password678"
+Then  user should be able to access
+
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel300" and "password910"
+Then  user should be able to access
+
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel400" and "password67657"
+Then  user should be able to access
+
+Scenario: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide "anandpatel500" and "password65765"
+Then  user should be able to access
+------------------------------------------------------------------------------------------------------
+Cucumber with data driven framework
+
+Feature: Test login Functionality of Demo Automation
+
+Scenario Outline: login Functionality with valid credential
+Given Open Chrome and launch URL
+When provide  "<userName>" and  "<password>"
+Then  user should be able to access
+
+Examples:
+| userName | password |
+| anand123 | pass123 |
+| anand456 | pass123 |
+
+
+package com.learnAutomation.Cucumber;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open Chrome and launch URL$")
+	public void open_Chrome_and_launch_URL() 
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+
+	@When("^provide  \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void provide_and(String AnanduserName, String Anandpassword)   
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(AnanduserName);
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(Anandpassword);
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.close();
+
+	}
+
+
+}
+-------------------------------------------------------------------------------------------------------------------------------------------
+Parameterization of Browser
+
+Feature: Test login Functionality of Demo Automation
+
+Scenario Outline: login Functionality with valid credential
+Given Open "ie" and launch URL
+When provide  "<userName>" and  "<password>"
+Then  user should be able to access
+
+Examples:
+| userName | password |
+| anand123 | pass123 |
+
+package com.learnAutomation.Cucumber;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open \"([^\"]*)\" and launch URL$")
+	public void open_and_launch_URL(String browser)
+	{
+		if(browser.equalsIgnoreCase("chrome"))
+		{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		}
+		else if(browser.equalsIgnoreCase("ie"))
+		{
+			System.setProperty("webdriver.ie.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\IEDriverServer_x64_3.14.0\\IEDriverServer.exe");
+			 driver= new InternetExplorerDriver();
+		}
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+
+	@When("^provide  \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void provide_and(String AnanduserName, String Anandpassword)   
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(AnanduserName);
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(Anandpassword);
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.close();
+
+	}
+
+
+}
+
+====================================================================================================================================================================
+
+Feature: Test login Functionality of Demo Automation
+
+Scenario Outline: login Functionality with valid credential
+Given Open "<browser>" and launch URL
+When provide  "<userName>" and  "<password>"
+Then  user should be able to access
+
+Examples:
+| userName | password | browser |
+| anand123 | pass123 | ie|
+| anand456 | pass123 | ie|
+| anand123 | pass123 | chrome |
+| anand456 | pass123 | chrome |
+
+
+package com.learnAutomation.Cucumber;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open \"([^\"]*)\" and launch URL$")
+	public void open_and_launch_URL(String browser)
+	{
+		if(browser.equalsIgnoreCase("chrome"))
+		{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		}
+		else if(browser.equalsIgnoreCase("ie"))
+		{
+			System.setProperty("webdriver.ie.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\IEDriverServer_x64_3.14.0\\IEDriverServer.exe");
+			 driver= new InternetExplorerDriver();
+		}
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+
+	@When("^provide  \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void provide_and(String AnanduserName, String Anandpassword)   
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(AnanduserName);
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(Anandpassword);
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.close();
+
+	}
+
+
+}
+=================================================================================================================================================================
+Verification of Cucumber
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.learnAutomation.Cucumber</groupId>
+  <artifactId>com.learnAutomation.Cucumber</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>1.2.4</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>1.2.4</version>
+</dependency>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+</dependency>
+
+</dependencies>
+</project>
+
+PGM--------------------------
+
+package com.learnAutomation.Cucumber;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class StepDef 
+{
+	WebDriver driver;
+	@Given("^Open \"([^\"]*)\" and launch URL$")
+	public void open_and_launch_URL(String browser)
+	{
+		if(browser.equalsIgnoreCase("chrome"))
+		{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		driver=new ChromeDriver();
+		}
+		else if(browser.equalsIgnoreCase("ie"))
+		{
+			System.setProperty("webdriver.ie.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\IEDriverServer_Win32_3.14.0\\IEDriverServer.exe");
+			 driver= new InternetExplorerDriver();
+		}
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/SignIn.html");
+	}
+
+
+	@When("^provide  \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void provide_and(String AnanduserName, String Anandpassword)   
+	{
+		driver.findElement(By.xpath("/html/body/div/div/div[2]/input")).sendKeys(AnanduserName);
+		driver.findElement(By.xpath("/html/body/div/div/div[3]/input")).sendKeys(Anandpassword);
+	}
+
+	@Then("^user should be able to access$")
+	public void user_should_be_able_to_access()
+	{
+		driver.findElement(By.id("enterbtn")).click();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String error=driver.findElement(By.id("errormsg")).getText();
+		Assert.assertEquals("hi", "Invalid User Name or PassWord", error);
+		driver.close();
+
+	}
+
+
+}
+
+
+=======================================================================================================================================================================
+Reporting in Cucumber
+
+package com.learnAutomation.Cucumber;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features="FeaturesTest",glue="com.learnAutomation.Cucumber",format = {"pretty", "html:target/Destination"})
+public class TestRunner
+{
+
+}
+
+
+The report will be there named as “Index.html”.
+
+Open Index.html with web browser.
+
+Right click-properties--copy path and paste in browser
+
+You will see the report mentioned in the following image -
+
+Report looks like below
+
+  Feature: Test login Functionality of Demo Automation
+ Scenario Outline: login Functionality with valid credential
+Given Open "<browser>" and launch URL
+When provide "<userName>" and "<password>"
+Then user should be able to access
+ Examples:
+userName	password	browser
+anand123	pass123	ie
+anand456	pass123	ie
+anand123	pass123	chrome
+anand456	pass123	chrome
+ Scenario Outline: login Functionality with valid credential
+Given Open "ie" and launch URL
+When provide "anand123" and "pass123"
+Then user should be able to access
+ Scenario Outline: login Functionality with valid credential
+Given Open "ie" and launch URL
+When provide "anand456" and "pass123"
+Then user should be able to access
+ Scenario Outline: login Functionality with valid credential
+Given Open "chrome" and launch URL
+When provide "anand123" and "pass123"
+Then user should be able to access
+ Scenario Outline: login Functionality with valid credential
+Given Open "chrome" and launch URL
+When provide "anand456" and "pass123"
+Then user should be able to access
+
+=================================================================================================================================================
+Tag in Cucumber
+
+If you want to run particular scenario and feature file use tag
+
+running particular scenario
+
+Feature: Test login Functionality of Demo Automation
+
+@sanity
+  Scenario Outline: login Functionality with valid credential
+    Given Open "<browser>" and launch URL
+    When provide  "<userName>" and  "<password>"
+    Then user should be able to access
+    
+    Examples: 
+      | userName | password | browser |
+      | anand123 | pass123  | ie      |
+      | anand456 | pass123  | ie      |
+      | anand123 | pass123  | chrome  |
+      | anand456 | pass123  | chrome  |
+    
+    @smoke
+  Scenario Outline: login Functionality with invalid credential
+    Given Open "<browser>" and launch URL
+    When provide  "<userName>" and  "<password>"
+    Then user should be able to access
+
+    Examples: 
+      | userName | password | browser |
+      | anand123 | pass123  | ie      |
+      | anand456 | pass123  | ie      |
+      | anand123 | pass123  | chrome  |
+      | anand456 | pass123  | chrome  |
+
+
+
+package com.learnAutomation.Cucumber;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features="FeaturesTest",
+		glue="com.learnAutomation.Cucumber",
+		format = {"pretty", "html:target/Destination"},
+		tags = "@sanity")
+public class TestRunner
+{
+
+}
+
+=============================================================================================================================================================
+Skip the Scenario
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features="FeaturesTest",
+		glue="com.learnAutomation.Cucumber",
+		format = {"pretty", "html:target/Destination"},
+		tags = "~@sanity")
+public class TestRunner
+{
+
+}
+
+===============================================================================================================================================================
+Scenarios with Multiple tag OR condition
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features="FeaturesTest",
+		glue="com.learnAutomation.Cucumber",
+		format = {"pretty", "html:target/Destination"},
+		tags = "@sanity,@smoke"
+		)
+public class TestRunner
+{
+
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+AND Condition
+
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features="FeaturesTest",
+		glue="com.learnAutomation.Cucumber",
+		format = {"pretty", "html:target/Destination"},
+		tags = "@sanity","@smoke"
+		)
+public class TestRunner
+{
+
+}
+
+
+
+Feature: Test login Functionality of Demo Automation
+
+@sanity
+  Scenario Outline: login Functionality with valid credential
+    Given Open "<browser>" and launch URL
+    When provide  "<userName>" and  "<password>"
+    Then user should be able to access
+    
+    Examples: 
+      | userName | password | browser |
+      | anand123 | pass123  | ie      |
+      | anand456 | pass123  | ie      |
+      | anand123 | pass123  | chrome  |
+      | anand456 | pass123  | chrome  |
+    
+    @smoke
+  Scenario Outline: login Functionality with invalid credential
+    Given Open "<browser>" and launch URL
+    When provide  "<userName>" and  "<password>"
+    Then user should be able to access
+
+    Examples: 
+      | userName | password | browser |
+      | anand123 | pass123  | ie      |
+      | anand456 | pass123  | ie      |
+      | anand123 | pass123  | chrome  |
+      | anand456 | pass123  | chrome  |
+
+      @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential
+    Given Open "<browser>" and launch URL
+    When provide  "<userName>" and  "<password>"
+    Then user should be able to access
+
+    Examples: 
+      | userName | password | browser |
+      | anand123 | pass123  | ie      |
+      | anand456 | pass123  | ie      |
+      | anand123 | pass123  | chrome  |
+      | anand456 | pass123  | chrome  |
+
+===================================================================================================================================================
+Execute with Scenario name include ABCD
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features="FeaturesTest",
+		glue="com.learnAutomation.Cucumber",
+		format = {"pretty", "html:target/Destination"},
+		name={"ABCD"})
+public class TestRunner
+{
+
+}
+====================================================================================================================================================
+Maven Run
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.learnAutomation.Cucumber</groupId>
+  <artifactId>com.learnAutomation.Cucumber</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>1.2.4</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>1.2.4</version>
+</dependency>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+</dependency>
+
+</dependencies>
+<build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.0</version>
+          <configuration>
+            <source>1.8</source>
+          <target>1.8</target>
+          </configuration>
+          </plugin>
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <includes>
+             <include>TestRunner.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+   </build>
+</project>
+--------------------------------------------------------
+
+Generic way if you have multiple
+
+<build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+          <configuration>
+            <source>1.8</source>
+          <target>1.8</target>
+          </configuration>
+          </plugin>
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <includes>
+            <include>**/*TestRunner.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+   </build>
+</project>
+
+** any package in this project
+* any class ends with TestRunner
+
+if you want to use the Java 8 language features (-source 1.8) and also want the compiled classes to be compatible 
+with JVM 1.8 (-target 1.8), you can either add the two following properties, which are the default property names for 
+the plugin parameters:
+
+1. Run as Maven Clean will clean Target directory
+
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building com.learnAutomation.Cucumber 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/2.5/maven-clean-plugin-2.5.pom
+[INFO] Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/2.5/maven-clean-plugin-2.5.pom (4 KB at 1.3 KB/sec)
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ com.learnAutomation.Cucumber ---
+[INFO] Deleting C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 7.637 s
+[INFO] Finished at: 2018-09-13T13:35:07+05:30
+[INFO] Final Memory: 8M/123M
+[INFO] ------------------------------------------------------------------------
+
+2. Run as Maven Install will check if any depedency or file or plugin is missing then it will download it and then it will start Test
+
+Note- If your project is directing JRE instead of JDK then you will get build error.
+
+Error- No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+
+On your Eclipse IDE, go into Window > Preferences > Java > Installed JREs > and check your installed JREs. You should have an entry with a JDK there.
+So, I press Edit button and change path to the JDK Folder, then clean project and everything starts to work
+
+Then Maven Clean(skip if u not getting error)
+
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building com.learnAutomation.Cucumber 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ com.learnAutomation.Cucumber ---
+[INFO] Deleting C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 0.963 s
+[INFO] Finished at: 2018-09-13T13:46:04+05:30
+[INFO] Final Memory: 6M/123M
+[INFO] ------------------------------------------------------------------------
+
+Maven Install
+
+Runner class should be present in SRC/Test/Java
+
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building com.learnAutomation.Cucumber 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ com.learnAutomation.Cucumber ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ com.learnAutomation.Cucumber ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ com.learnAutomation.Cucumber ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:testCompile (default-testCompile) @ com.learnAutomation.Cucumber ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 2 source files to C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.0:test (default-test) @ com.learnAutomation.Cucumber ---
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running TestRunner
+Feature: Test login Functionality of Demo Automation
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:4[0m
+    [36mGiven [0m[36mOpen "<browser>" and launch URL[0m
+    [36mWhen [0m[36mprovide  "<userName>" and  "<password>"[0m
+    [36mThen [0m[36muser should be able to access[0m
+
+    Examples: 
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 26687
+Only local connections are allowed
+Sep 14, 2018 11:35:55 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:11[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                            [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 47540
+Only local connections are allowed
+Sep 14, 2018 11:36:03 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:12[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                            [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 43667
+Only local connections are allowed.
+Sep 14, 2018 11:36:15 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:13[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                        [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 30285
+Only local connections are allowed.
+Sep 14, 2018 11:36:28 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:14[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                        [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:30[0m
+    [36mGiven [0m[36mOpen "<browser>" and launch URL[0m
+    [36mWhen [0m[36mprovide  "<userName>" and  "<password>"[0m
+    [36mThen [0m[36muser should be able to access[0m
+
+    Examples: 
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 44833
+Only local connections are allowed
+Sep 14, 2018 11:36:40 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:37[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                              [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 26384
+Only local connections are allowed
+Sep 14, 2018 11:36:47 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:38[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                              [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 46628
+Only local connections are allowed.
+Sep 14, 2018 11:36:56 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:39[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                          [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 20362
+Only local connections are allowed.
+Sep 14, 2018 11:37:14 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:40[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                          [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+
+8 Scenarios ([32m8 passed[0m)
+24 Steps ([32m24 passed[0m)
+1m36.568s
+
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 97.491 s - in TestRunner
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ com.learnAutomation.Cucumber ---
+[INFO] Building jar: C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ com.learnAutomation.Cucumber ---
+[INFO] Installing C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar to C:\Users\anand.mohan.patel\.m2\repository\com\learnAutomation\Cucumber\com.learnAutomation.Cucumber\0.0.1-SNAPSHOT\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\pom.xml to C:\Users\anand.mohan.patel\.m2\repository\com\learnAutomation\Cucumber\com.learnAutomation.Cucumber\0.0.1-SNAPSHOT\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:48 min
+[INFO] Finished at: 2018-09-14T11:37:26+05:30
+[INFO] Final Memory: 18M/123M
+[INFO] ------------------------------------------------------------------------
+
+===================================================================================================================================================================
+
+JENKINS Integration
+
+Step-1: https://jenkins.io/download/
+Click on Generic java package War, automatically it will download
+
+Step-2:C:\WINDOWS\system32>java -jar C:\Users\anand.mohan.patel\Documents\Anand\jenkins.war
+
+if you drag and drop jar in cmd prompt,path will be taken automatically with with file name
+
+success Message:
+INFO:
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+f2cfb35d803747fba2a0052eb0a810a3
+
+This may also be found at: C:\Users\anand.mohan.patel\.jenkins\secrets\initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+Sep 13, 2018 4:11:19 PM hudson.model.UpdateSite updateData
+INFO: Obtained the latest update center data file for UpdateSource default
+Sep 13, 2018 4:11:20 PM hudson.model.DownloadService$Downloadable load
+INFO: Obtained the updated data file for hudson.tasks.Maven.MavenInstaller
+Sep 13, 2018 4:11:20 PM hudson.model.AsyncPeriodicWork$1 run
+INFO: Finished Download metadata. 13,102 ms
+Sep 13, 2018 4:11:20 PM hudson.model.UpdateSite updateData
+INFO: Obtained the latest update center data file for UpdateSource default
+Sep 13, 2018 4:11:20 PM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Sep 13, 2018 4:11:20 PM hudson.WebAppMain$3 run
+INFO: Jenkins is fully up and running
+-------------------------------------------------------
+Step3:  http://localhost:8080 and unlock jenkins by f2cfb35d803747fba2a0052eb0a810a3 and continue as admin
+Step4: Download required plugins along with Maven plugin
+Step5:go to manage Jenkins-->Global Tool Configuration-->JDK-->JDK installations-->provide name as JAVA_HOME and path as C:\Program Files\Java\jdk1.8.0_181, click on apply and save
+Step6- New Iten-->Enter Project Name-->Maven Project-->Create a Job and provide pom.xml with path and "clean install" under goals and option. click on apply and save
+Step-7 Build now and click on console output to observe
+
+
+
+
+==============================================================================================================================================================
+Jenkins Console Output
+Started by user admin
+Building in workspace C:\Users\anand.mohan.patel\.jenkins\workspace\Cucumber_Anand
+Parsing POMs
+Established TCP socket on 59871
+[com.learnAutomation.Cucumber] $ "C:\Program Files\Java\jdk1.8.0_181/bin/java" -cp C:\Users\anand.mohan.patel\.jenkins\plugins\maven-plugin\WEB-INF\lib\maven35-agent-1.12-alpha-1.jar;C:\Users\anand.mohan.patel\.jenkins\tools\hudson.tasks.Maven_MavenInstallation\MAVEN_HOME\boot\plexus-classworlds-2.5.2.jar;C:\Users\anand.mohan.patel\.jenkins\tools\hudson.tasks.Maven_MavenInstallation\MAVEN_HOME/conf/logging jenkins.maven3.agent.Maven35Main C:\Users\anand.mohan.patel\.jenkins\tools\hudson.tasks.Maven_MavenInstallation\MAVEN_HOME C:\Users\anand.mohan.patel\.jenkins\war\WEB-INF\lib\remoting-3.25.jar C:\Users\anand.mohan.patel\.jenkins\plugins\maven-plugin\WEB-INF\lib\maven35-interceptor-1.12-alpha-1.jar C:\Users\anand.mohan.patel\.jenkins\plugins\maven-plugin\WEB-INF\lib\maven3-interceptor-commons-1.12-alpha-1.jar 59871
+<===[JENKINS REMOTING CAPACITY]===>channel started
+Executing Maven:  -B -f C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\pom.xml clean install
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----< com.learnAutomation.Cucumber:com.learnAutomation.Cucumber >------
+[INFO] Building com.learnAutomation.Cucumber 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ com.learnAutomation.Cucumber ---
+[INFO] Deleting C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ com.learnAutomation.Cucumber ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ com.learnAutomation.Cucumber ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ com.learnAutomation.Cucumber ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:testCompile (default-testCompile) @ com.learnAutomation.Cucumber ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 2 source files to C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.0:test (default-test) @ com.learnAutomation.Cucumber ---
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running TestRunner
+Feature: Test login Functionality of Demo Automation
+
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:4[0m
+    [36mGiven [0m[36mOpen "<browser>" and launch URL[0m
+    [36mWhen [0m[36mprovide  "<userName>" and  "<password>"[0m
+    [36mThen [0m[36muser should be able to access[0m
+
+    Examples: 
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 14711
+Only local connections are allowed
+Sep 14, 2018 10:14:48 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:11[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                            [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 43579
+Only local connections are allowed
+Sep 14, 2018 10:14:56 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:12[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                            [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 39582
+Only local connections are allowed.
+Sep 14, 2018 10:15:11 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:13[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                        [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 13385
+Only local connections are allowed.
+Sep 14, 2018 10:15:24 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+  @sanity
+  Scenario Outline: login Functionality with valid credential [90m# cucumber.feature:14[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                        [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                   [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                        [90m# StepDef.user_should_be_able_to_access()[0m
+
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:30[0m
+    [36mGiven [0m[36mOpen "<browser>" and launch URL[0m
+    [36mWhen [0m[36mprovide  "<userName>" and  "<password>"[0m
+    [36mThen [0m[36muser should be able to access[0m
+
+    Examples: 
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 25236
+Only local connections are allowed
+Sep 14, 2018 10:15:36 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:37[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                              [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Started InternetExplorerDriver server (32-bit)
+3.14.0.0
+Listening on port 42357
+Only local connections are allowed
+Sep 14, 2018 10:15:43 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:38[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mie[0m[32m" and launch URL[0m                              [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 31792
+Only local connections are allowed.
+Sep 14, 2018 10:15:51 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:39[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                          [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand123[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 16667
+Only local connections are allowed.
+Sep 14, 2018 10:16:02 AM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+  @smoke @sanity
+  Scenario Outline: login Functionality with invalid credential [90m# cucumber.feature:40[0m
+    [32mGiven [0m[32mOpen "[0m[32m[1mchrome[0m[32m" and launch URL[0m                          [90m# StepDef.open_and_launch_URL(String)[0m
+    [32mWhen [0m[32mprovide  "[0m[32m[1manand456[0m[32m" and  "[0m[32m[1mpass123[0m[32m"[0m                     [90m# StepDef.provide_and(String,String)[0m
+    [32mThen [0m[32muser should be able to access[0m                          [90m# StepDef.user_should_be_able_to_access()[0m
+
+8 Scenarios ([32m8 passed[0m)
+24 Steps ([32m24 passed[0m)
+1m31.937s
+
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 93.358 s - in TestRunner
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[JENKINS] Recording test results
+[WARNING] Attempt to (de-)serialize anonymous class hudson.maven.reporters.SurefireArchiver$2; see: https://jenkins.io/redirect/serialization-of-anonymous-classes/
+[WARNING] Attempt to (de-)serialize anonymous class hudson.maven.reporters.BuildInfoRecorder$1; see: https://jenkins.io/redirect/serialization-of-anonymous-classes/
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ com.learnAutomation.Cucumber ---
+[INFO] Building jar: C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ com.learnAutomation.Cucumber ---
+[INFO] Installing C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar to C:\Users\anand.mohan.patel\.m2\repository\com\learnAutomation\Cucumber\com.learnAutomation.Cucumber\0.0.1-SNAPSHOT\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\pom.xml to C:\Users\anand.mohan.patel\.m2\repository\com\learnAutomation\Cucumber\com.learnAutomation.Cucumber\0.0.1-SNAPSHOT\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.pom
+[WARNING] Attempt to (de-)serialize anonymous class hudson.maven.reporters.MavenArtifactArchiver$2; see: https://jenkins.io/redirect/serialization-of-anonymous-classes/
+[WARNING] Attempt to (de-)serialize anonymous class hudson.maven.reporters.MavenFingerprinter$1; see: https://jenkins.io/redirect/serialization-of-anonymous-classes/
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 02:02 min
+[INFO] Finished at: 2018-09-14T10:16:18+05:30
+[INFO] ------------------------------------------------------------------------
+Waiting for Jenkins to finish collecting data
+[JENKINS] Archiving C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\pom.xml to com.learnAutomation.Cucumber/com.learnAutomation.Cucumber/0.0.1-SNAPSHOT/com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.pom
+[JENKINS] Archiving C:\Users\anand.mohan.patel\workspace2\com.learnAutomation.Cucumber\target\com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar to com.learnAutomation.Cucumber/com.learnAutomation.Cucumber/0.0.1-SNAPSHOT/com.learnAutomation.Cucumber-0.0.1-SNAPSHOT.jar
+channel stopped
+Finished: SUCCESS
+
+=================================================================Thank You===================================================================================
+Git Hub
+
+git config --global user.name "anandpatel88"
+git config --global user.email "anandmohanbunty@gmail.com"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

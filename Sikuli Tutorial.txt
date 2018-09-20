@@ -1,0 +1,225 @@
+Introduction
+
+Sikuli is an open source GUI based automation tool. It is used to interact with elements of a web page and handling windows based popups. It uses the technique of 'Image Recognition' to interact with elements of the web page and windows popups. Sikuli considers all the elements of a web page as images and recognizes the elements based on their images. Sikuli is preferred when UI elements are stable and are not constantly changing.
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.Sikuli.test</groupId>
+  <artifactId>com.Sikuli.test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>com.sikulix</groupId>
+    <artifactId>sikulixapi</artifactId>
+    <version>1.1.2</version>
+</dependency>
+  
+  </dependencies>
+</project>
+Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+package com.Sikuli.test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.sikuli.script.FindFailed;
+import org.sikuli.script.Pattern;
+import org.sikuli.script.Screen;
+
+public class FileUpload
+{
+	public static void main(String[] args) throws Exception
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/FileUpload.html");
+		Screen sc=new Screen();
+		Pattern browse=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\browse.PNG");
+		Pattern filename=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\filename.PNG");
+		Pattern open=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\open.PNG");
+		sc.click(browse);
+		sc.type(filename, "C:\\Users\\anand.mohan.patel\\Desktop\\LWD.PNG");
+		sc.click(open);
+	}
+
+}
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Add TestNG
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.Sikuli.test</groupId>
+  <artifactId>com.Sikuli.test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>com.sikulix</groupId>
+    <artifactId>sikulixapi</artifactId>
+    <version>1.1.2</version>
+</dependency>
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>6.14.3</version>
+    <scope>test</scope>
+</dependency>
+  
+  </dependencies>
+</project>
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+package com.Sikuli.test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.sikuli.script.Pattern;
+import org.sikuli.script.Screen;
+import org.sikuli.script.SikuliException;
+import org.testng.annotations.Test;
+
+public class FileUpload
+{
+	@Test
+	public void upload() throws SikuliException
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/FileUpload.html");
+		Screen sc=new Screen();
+		Pattern browse=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\browse.PNG");
+		Pattern filename=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\filename.PNG");
+		Pattern open=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\open.PNG");
+		sc.click(browse);
+		sc.type(filename, "C:\\Users\\anand.mohan.patel\\Desktop\\LWD.PNG");
+		sc.click(open);
+	}
+
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+package com.Sikuli.test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.sikuli.script.Pattern;
+import org.sikuli.script.Screen;
+import org.sikuli.script.SikuliException;
+import org.testng.annotations.Test;
+
+public class Download
+{
+	@Test
+	public void download() throws SikuliException, InterruptedException
+	{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\anand.mohan.patel\\Documents\\Anand\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("http://demo.automationtesting.in/FileDownload.html");
+		Screen sc=new Screen();
+		Pattern download=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\download.PNG");
+		Pattern filedownload=new Pattern("C:\\Users\\anand.mohan.patel\\workspace2\\com.Sikuli.test\\Screenshot\\filedownload.PNG");
+		sc.click(download);
+		
+	}
+
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+    <classes>
+      <class name="com.Sikuli.test.FileUpload"/>
+      <class name="com.Sikuli.test.Download"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.Sikuli.test</groupId>
+  <artifactId>com.Sikuli.test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.13.0</version>
+</dependency>
+<dependency>
+    <groupId>com.sikulix</groupId>
+    <artifactId>sikulixapi</artifactId>
+    <version>1.1.2</version>
+</dependency>
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>6.14.3</version>
+    <scope>test</scope>
+</dependency>
+  
+  </dependencies>
+  <build>
+  <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+</plugins>
+</build>
+</project>
+-----------------------------------------------------------------------------------------------------------------------------------------
+Maven Clean
+
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building com.Sikuli.test 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ com.Sikuli.test ---
+[INFO] Deleting C:\Users\anand.mohan.patel\workspace2\com.Sikuli.test\target
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.153 s
+[INFO] Finished at: 2018-09-18T14:13:16+05:30
+[INFO] Final Memory: 6M/123M
+[INFO] ------------------------------------------------------------------------
+
+Data collection
+File number of words
+Data structure
+JDBC
+insertion sort and bubble sort
+JSON file validation
+xml file validation
